@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Prelim Exam - Scrape to CSV to Plot</title>
+	<script type="text/javascript" src="Chart.min.js"></script>
+	<script type="text/javascript" src="utils.js"></script>
+	<script type="text/javascript" src="d3.js"></script>
+	<style>
+	canvas {
+		-moz-user-select: none;
+		-webkit-user-select: none;
+		-ms-user-select: none;
+	}
+	</style>
+</head>
+<body>
+	<div style="width:75%">
+		<canvas id="chart"></canvas>
+	</div>
+	
+	<script>
+		d3.csv('https://cors-anywhere.herokuapp.com/https://raw.githubusercontent.com/lupuskuro/kferraris.github.io/master/C6/ferraris_c6.csv') 
+		.then(makeChart);
+		function makeChart(data) {
+		  var dataLabels = data.map(function(d) {return d.location});
+		  var magData = data.map(function(d) {return d.magnitude});
+
+		  var chart = new Chart('chart', {
+		    type: 'horizontalBar',
+		    data: {
+		      labels: magData,
+		      datasets: [
+		        {
+		          label: "Magnitude",
+		          data: dataLabels
+		        }
+		      ]
+		    },
+			options: {
+				title: {
+				display: true,
+				text: 'Lastname Prelim Exam C6'
+				},
+			}
+		  });
+		}
+	</script>
+
+
+</body>
+</html>
+
+<!-- 
+
+TODOs
+
+1. Navigate to URI: https://www.phivolcs.dost.gov.ph/index.php/earthquake/earthquake-information3
+2. Open Developers Tools > Console. All scripts in the next steps should be executed inside the developer tools console.
+3. Get the first location and magnitude (Use your knowledge in static scraping)
+	e.g. 2.6,008 km S 69° E of Looc (Occidental Mindoro)
+4. Use your codes in step 3 to complete the script below
+	data = []
+	data.push(["location","magnitude"])
+	for(i=2;i<=13;i++){
+		mag = document.querySelector(`PLACE YOUR CODES HERE...`)
+		loc = document.querySelector(`PLACE YOUR CODES HERE...`)
+		data.push([mag.innerText,loc.innerText])
+	}
+5. Create a CSV file of your data array using the scripts given.
+	function toCSV(data, filename){
+		filename = filename + ".csv";
+		let csvContent = "data:text/csv;charset=utf-8,"	
+		data.forEach(function(rowArray){
+		    let row = rowArray.join(",");
+			csvContent += row + "\r\n";
+	        console.log(row);
+		});
+	    
+		var encodedUri = encodeURI(csvContent);
+		var link = document.createElement("a");
+		link.setAttribute("href",encodedUri);
+		link.setAttribute("download",filename);
+		document.body.appendChild(link);
+		link.click()
+	}
+	// To execute the script and download the CSV file
+	toCSV(data,"earthquake")
+6. Create new repo and upload your CSV file and modify the code in line 22.
+7. Open this html in a browser
+8. Done! Good Job!
+
+-->
